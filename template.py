@@ -2,9 +2,9 @@
 RECORD CHECK  -  my version
 ===========================
 
-Name  : Varsha Chuttur
-Lane  :  AI 
-Date  : 03/10/2026
+Name  : Ouvarshi Varsha Chuttur
+Lane  :  AI
+Date  : 23/10/2026
 
 Run it:   python template.py
 
@@ -12,61 +12,95 @@ Work through the numbered sections in order. Each one tells you what it must do.
 Delete these instructions as you replace them with your code.
 """
 
-# ==================================================================== INPUT
-# 1. Ask for your three values.
+# ====================================================================== CLASS
+# 1. Define a class called Record.
 #
-#    - the first is TEXT      (a name, a hostname, an IP)  -> no conversion needed
-#    - the second is a NUMBER (use float(), not int())
-#    - the third  is a NUMBER (use float(), not int())
 
-datasetname = input("Enter a dataset name: ")
-rowsloaded = float(input("Enter number of rows loaded: "))
-rowsexpected = float(input("Enter number of rows expected: "))
-
-if percent >= 100:
-    status = "OVER LIMIT"
-elif percent >= 90:
-    status = "WARNING"
-else:
-    status = "OK"
-
-print("Dataset name:", datasetname)
-print("Rows loaded:", rowsloaded)
-print("Rows expected:", rowsexpected)
-print("Available rows:", difference)
-print("Percent of limit: {:.2f}%".format(percent))
-print("Status:", status)
+# your class goes here
+class Record:
+    def __init__(self, label, value, limit):
+        self.label = label
+        self.value = value
+        self.limit = limit
 
 
-over_count = 0
+    def status(self):
+        """returns a status based on the percentage"""
+        percent = (self.value / self.limit * 100)
 
-while True:
-    datasetname = input("Enter a dataset name (or quit to finish): ")
+        if percent >= 100:
+            return "OVER LIMIT"
+        elif percent >= 90:
+            return "WARNING"
+        else:
+            return "OK"
 
-    if datasetname == "quit":
-        break
 
-    rowsloaded = float(input("Enter number of rows loaded: "))
-    rowsexpected = float(input("Enter number of rows expected: "))
 
-    difference = rowsexpected - rowsloaded
-    percent = (rowsloaded / rowsexpected) * 100
+# ==================================================================== RECORDS
+# 2. Create your records.
+#
 
-    if percent >= 100:
-        status = "OVER LIMIT"
-    elif percent >= 90:
-        status = "WARNING"
-    else:
-        status = "OK"
+ # replace with your code
+records = [
+    Record("survey_2026", 1187, 1200),
+    Record("survey_2027", 2000, 1600),
+]
 
-    print("Dataset name:", datasetname)
-    print("Rows loaded:", rowsloaded)
-    print("Rows expected:", rowsexpected)
-    print("Available rows:", difference)
-    print("Percent of limit: {:.2f}%".format(percent))
-    print("Status:", status)
+def load_records(path):
+    """Load records from a file and return a list of Record objects."""
+    records = []
 
+    with open(path, "r") as file:
+        for line in file:
+            label, value, limit = line.strip().split(",")
+            record = Record(label, float(value), float(limit))
+            records.append(record)
+
+        return records
+# ==================================================================== OUTPUT
+# 3. Print a report for each record.
+
+for record in records:
+    print()
+    print("=" * 34)
+    print(f"  RECORD CHECK  -  {record.label}")
+    print("=" * 34)
+
+    # your report lines go here
+
+    print("=" * 34)
+
+records = load_records(r"C:\\Users\\versh\\Downloads\\CST1510\\W05\\Record_sample.txt")
+        
+for record in records:
+    print(record.label, record.status())
+
+
+over_limit_count = 0
+
+# Print each record
+for record in records:
+    print("=" * 36)
+    print(f"Dataset Name: {record.label}")
+    print(f"Rows loaded: {record.value}")
+    print(f"Rows expected: {record.limit}")
+
+   
+    status = record.status()
+    print(f"Status: {status}")
+
+   
     if status == "OVER LIMIT":
-        over_count += 1
+        over_limit_count += 1
 
-print("OVER LIMIT records:", over_count)
+# Print the total once
+print("=" * 36)
+print(f"Total records OVER LIMIT: {over_limit_count}")
+# ==========================================================================
+# 4. Before you finish:
+#
+#    [ ] Run it and check every record's numbers by hand
+#    [ ] Check every method only reads/changes its OWN object (self) -
+#        nothing reaches outside itself
+#    [ ] Check every method and __init__ has a one-line docstring
