@@ -1,0 +1,6 @@
+label,value,limit,percent,status
+srv-01,45,50,90.0,WARNING
+srv-02,95,100,95.0,WARNING
+srv-03,120,100,120.0,OVER LIMIT
+srv-04,75,80,93.75,WARNING
+srv-05,60,100,60.0,OK
